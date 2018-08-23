@@ -2,3 +2,4 @@
 *.tokens
 *.pyc
 __pycache__
+Aim8*.py
