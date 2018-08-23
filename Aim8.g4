@@ -18,8 +18,8 @@ However we will not implement these later refinements here.
 */
 
 sexpr
-    : ATOM
-    | NULL
+    : null
+    | ATOM
     | LPAREN sexpr RPAREN
     | LPAREN sexpr COMMA sexpr RPAREN
     ;
@@ -48,21 +48,43 @@ mexpr
 expr
     : sexpr
     | mexpr
+    | conditional_expr
     ;
 
-/*
-"In what follows we shall use sequences of capital Latin letters
-as atomic symbols."
-*/
-
-ATOM
-    : [A-Z]+
+conditional_expr
+    : LBRACKET conditional_pair (SEMICOLON conditional_pair)* RBRACKET
     ;
 
-NAME
-    : [a-z]+
+conditional_pair
+    : predicate arrow expr
     ;
 
+predicate
+    : mexpr
+    | proposition
+    ;
+
+proposition
+    : mexpr connective mexpr
+    ;
+
+connective
+    : AND
+    | OR
+    | NOT
+    ;
+
+arrow
+    : ARROW
+    | ALT_ARROW
+    ;
+
+null
+    : NULL
+    | ALT_NULL
+    ;
+
+/* lexer rules */
 LPAREN
     : '('
     ;
@@ -87,6 +109,60 @@ SEMICOLON
     : ';'
     ;
 
+// capital lambda U+039B
 NULL
-    : '⋀'
+    : 'Λ'
+    ;
+
+// lowercase lambda U+03BB
+LAMBDA
+    : 'λ'
+    ;
+
+// long rightwards arrow U+27F6
+ARROW
+    : '⟶'
+    ;
+
+// logical and U+2227
+AND
+    : '∧'
+    ;
+
+// logical or U+2228
+OR
+    : '∨'
+    ;
+
+// those are a pain to type...
+ALT_ARROW
+    : '->'
+    ;
+
+ALT_NULL
+    : 'NIL'
+    ;
+
+NOT
+    : '~'
+    ;
+
+TRUE
+    : '1'
+    ;
+
+FALSE
+    : '0'
+    ;
+
+/*
+"In what follows we shall use sequences of capital Latin letters
+as atomic symbols."
+*/
+ATOM
+    : [A-Z]+
+    ;
+
+NAME
+    : [a-z]+
     ;
