@@ -19,9 +19,12 @@ However we will not implement these later refinements here.
 
 sexpr
     : null
-    | ATOM
-    | LPAREN sexpr RPAREN
-    | LPAREN sexpr COMMA sexpr RPAREN
+    | atom
+    | enclosd_sexpr
+    ;
+
+enclosd_sexpr
+    : LPAREN sexpr (COMMA sexpr)* RPAREN
     ;
 
 /*
@@ -82,6 +85,10 @@ arrow
 null
     : NULL
     | ALT_NULL
+    ;
+
+atom
+    : ATOM
     ;
 
 /* lexer rules */
