@@ -1,6 +1,6 @@
+*.pyc
+*.egg-info
 *.interp
 *.tokens
-*.pyc
 __pycache__
-Aim8*.py
 venv/

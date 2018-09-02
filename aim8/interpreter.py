@@ -8,22 +8,28 @@ from antlr4 import (
 )
 from antlr4.tree import Tree
 
-from Aim8Lexer import Aim8Lexer
-from Aim8Parser import Aim8Parser
-from Aim8Listener import Aim8Listener
+from .generated.Aim8Lexer import Aim8Lexer
+from .generated.Aim8Parser import Aim8Parser
+from .generated.Aim8Listener import Aim8Listener
 
 
-def main(argv):
-    input = InputStream(argv[1])
-    lexer = Aim8Lexer(input)
+def aim8EvalString(input):
+    lexer = Aim8Lexer(InputStream(input))
     stream = CommonTokenStream(lexer)
     parser = Aim8Parser(stream)
     tree = parser.expr()
+    # TMP
     # import ipdb;ipdb.set_trace()
     printer = TreePrinter()
     walker = ParseTreeWalker()
     walker.walk(printer, tree)
-    print(aim8eval(tree))
+    # /TMP
+    return aim8eval(tree)
+
+
+def main():
+    input = sys.argv[1]
+    print(aim8EvalString(input))
 
 
 class _TRUE(object):
@@ -93,4 +99,4 @@ class TreePrinter(Aim8Listener):
 
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()
