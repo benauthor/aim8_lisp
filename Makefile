@@ -5,10 +5,6 @@ clean:
 
 grammar: clean
 	antlr4 \
-	-Dlanguage=Python3 \
-	-o aim8/generated/ \
-	-package aim8 \
+	-o internal/parser/ \
+	-Dlanguage=Go \
 	Aim8.g4
-
-test:
-	for t in test/*.py; do python $$t; done
